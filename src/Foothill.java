@@ -1,6 +1,6 @@
 public class Foothill
 {
-   public static void main(String[] args)
+   public static void main(String[] args) throws CloneNotSupportedException
    {
       int[][] userArray = {
             {1, 1, 1, 1, 1},
@@ -9,7 +9,7 @@ public class Foothill
       };
       
       TwoDimImage imObj1 = new TwoDimImage(userArray);
-      TwoDimImage imObj2 = new TwoDimImage(imObj1);
+      TwoDimImage imObj2 = (TwoDimImage)imObj1.clone();
       
       // change ONLY the first object
       imObj1.setElement(2, 2, 9);
@@ -21,7 +21,7 @@ public class Foothill
    }   
 }
 
-class TwoDimImage
+class TwoDimImage implements Cloneable
 {
    public static final int MAX_HEIGHT = 5;
    public static final int MAX_WIDTH = 5;
@@ -46,14 +46,10 @@ class TwoDimImage
          return;  // silent, but there's an error, for sure.
 
       for ( row = 0; row < intData.length; row++ )
-         for ( col = 0; col < intData[row].length; col ++ )
+         for ( col = 0; col < intData[row].length; col++ )
             data[row][col] = intData[row][col];
    }
-   
-   TwoDimImage(TwoDimImage tdi)
-   {
-      this(tdi.data);
-   }
+
    
    private boolean checkSize(int[][] data )
    {
@@ -61,9 +57,25 @@ class TwoDimImage
          return false;
       if (data.length > MAX_HEIGHT)
          return false;
-      if (data[0].length > MAX_WIDTH)  // since rectangle, need only check row 0
+      if (data[0].length > MAX_WIDTH) // since rectangle, only check row 0
          return false;
       return true;
+   }
+   
+   public Object clone() throws CloneNotSupportedException
+   {
+      int row, col;
+      
+      // always do this first - parent will clone its data correctly
+      TwoDimImage newBc = (TwoDimImage)super.clone();
+      
+      // now do the immediate class member objects
+      newBc.data = new int[MAX_HEIGHT][MAX_WIDTH];
+      for ( row = 0; row < MAX_HEIGHT; row++ )
+         for ( col = 0; col < MAX_WIDTH; col++ )
+            newBc.data[row][col] = this.data[row][col];
+      
+      return newBc;
    }
    
    public boolean setElement(int row, int col, int val)
@@ -92,31 +104,22 @@ class TwoDimImage
       System.out.println();
       
       // now each row from 0 to MAX_WIDTH, adding border chars
-      for (row = 0; row < TwoDimImage.MAX_HEIGHT; row++)
+      for ( row = 0; row < TwoDimImage.MAX_HEIGHT; row++ )
       {
          System.out.print("|");
-         for (col = 0; col < TwoDimImage.MAX_WIDTH; col++)
+         for ( col = 0; col < TwoDimImage.MAX_WIDTH; col++ )
             System.out.print(data[row][col]);
          System.out.println("|");
       }
       
       // bottom
-      for ( col = 0; col < TwoDimImage.MAX_WIDTH + 2; col++ )
+      for (col = 0; col < TwoDimImage.MAX_WIDTH + 2; col++)
          System.out.print("-");
       System.out.println();
    }
 }
 
-
-/*-----------------------------OUTPUT-----------------------------------
-
--------
-|11111|
-|22222|
-|33933|
-|00000|
-|90000|
--------
+/*-----------------------------OUTPUT---------------------------------------------
 
 -------
 |11111|
@@ -124,6 +127,14 @@ class TwoDimImage
 |33933|
 |00000|
 |90000|
+-------
+
+-------
+|11111|
+|22222|
+|33333|
+|00000|
+|00000|
 -------
 
 ------------------------------------------------------------------------*/
