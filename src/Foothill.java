@@ -166,7 +166,32 @@ class DataMatrix implements BarcodeIO
    
    public void displayRawImage()
    {
-      
+      int row, col;
+
+      // top row border
+      System.out.println();
+      for ( col = 0; col < BarcodeImage.MAX_WIDTH + 2; col++ )
+         System.out.print("-");
+      System.out.println();
+
+      // now each row from 0 to MAX_WIDTH, adding border chars
+      for ( row = 0; row < BarcodeImage.MAX_HEIGHT; row++ )
+      {
+         System.out.print("|");
+         for ( col = 0; col < BarcodeImage.MAX_WIDTH; col++ )
+         {
+            if (image.getPixel(row, col) == true)
+               System.out.print("*");
+            else
+               System.out.print(" ");
+         }
+         System.out.println("|");
+      }
+
+      // bottom
+      for (col = 0; col < BarcodeImage.MAX_WIDTH + 2; col++)
+         System.out.print("-");
+      System.out.println();
    }
    
    private void clearImage()
@@ -185,10 +210,7 @@ class DataMatrix implements BarcodeIO
    
    public void displayImageToConsole()
    {
-      // BarcodeImage displayToConsole() for help?
-      // display only the relevant portion of the image
-      // clipping the excess blank/white from the top and right
-      // display in border of | and -
+      
    }
    
 }
