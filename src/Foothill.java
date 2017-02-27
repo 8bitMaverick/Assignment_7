@@ -50,6 +50,7 @@ class DataMatrix implements BarcodeIO
   
    public static final char BLACK_CHAR = '*';
    public static final char WHITE_CHAR = ' ';
+   public static final int MIN_TEXT_LENGTH = 0, MAX_TEXT_LENGTH = 100;
    
    // a single internal copy of any image scanned-in
    // OR passed-into the constructor
@@ -87,17 +88,34 @@ class DataMatrix implements BarcodeIO
       readText(text);
    }
    
-   public boolean scan(BarcodeImage bc)
-   {
-      BarcodeImage temp = (BarcodeImage)bc.clone();
-      actualHeight = getImageHeight(bc);
-      actualWidth = getImageWidth(bc);
-      return false;
-   }
-   
+   // mutators
    public boolean readText(String text)
    {
-      return false;
+      if (text.length() < MIN_TEXT_LENGTH || text.length() > MAX_TEXT_LENGTH)
+         return false;
+      this.text = text;
+      return true;
+   }
+   
+   public boolean scan(BarcodeImage image)
+   {
+      try
+      {
+         BarcodeImage temp = (BarcodeImage)image.clone();
+      } catch (CloneNotSupportedException e)
+      {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+      
+      if (actualHeight < 0 || actualHeight >= BarcodeImage.MAX_HEIGHT
+            || actualWidth < 0 || actualWidth >= BarcodeImage.MAX_WIDTH)
+         return false;
+      
+      this.actualHeight = image.getImageHeight();
+      this.actualWidth = image.getImageWidth(0);
+      
+      return true;
    }
    
    public boolean generateImageFromText()
@@ -202,12 +220,12 @@ class BarcodeImage implements Cloneable
       return image_data[row][col];
    }
    
-   public int getImageHeight(BarcodeImage bc)
+   public int getImageHeight()
    {
       return image_data.length;
    }
    
-   public int getImageWidth(BarcodeImage bc)
+   public int getImageWidth(int k)
    {
       return image_data[0].length;
    }
