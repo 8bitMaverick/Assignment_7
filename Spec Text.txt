@@ -1,0 +1,52 @@
+This class will realize all the essential data and methods associated with a 2D 
+pattern, thought of conceptually as an image of a square or rectangular bar code.  
+Here are the essential ingredients.  This class has very little "smarts" in it, 
+except for the parameterized constructor.  It mostly just stores and retrieves 
+2D data.
+
+Remember: BarcodeImage implements Cloneable. (check)
+
+DATA
+
+public static final int MAX_HEIGHT = 30; (check)
+public static final int MAX_WIDTH = 65; (check)
+The exact internal dimensions of 2D data. 
+
+private boolean[][] image_data This is where to store your image.  If the 
+incoming data is too large, instantiate memory anyway, but leave it blank (white). 
+This data will be false for elements that are white, and true for elements that 
+are black.
+   
+METHODS
+
+Constructors.  Two minimum, but you could have others:
+Default Constructor -  instantiates a 2D array (MAX_HEIGHT x MAX_WIDTH) and 
+stuffs it all with blanks (false).
+
+BarcodeImage(String[] str_data) -takes a 1D array of Strings and converts it to
+ the internal 2D array of booleans. 
+ 
+Accessor and mutator for each bit in the image:  
+boolean getPixel(int row, int col)
+and boolean setPixel(int row, int col, boolean value);
+
+Optional - A private utility method is highly recommended, but not required:  
+checkSize(String[] data)  It does the job of checking the incoming data for 
+every conceivable size or null error.  Smaller is okay.  Bigger or null is not.
+
+Optional - A displayToConsole() method that is useful for debugging this class,
+ but not very useful for the assignment at large.
+ 
+A clone() method that overrides the method of that name in Cloneable interface.
+This is covered in detail in the modules.
+
+
+
+
+
+
+
+
+
+
+

@@ -23,41 +23,43 @@ public class Foothill
 
 class BarcodeImage implements Cloneable
 {
-   public static final int MAX_HEIGHT = 5;
-   public static final int MAX_WIDTH = 5;
+   // exact internal dimensions of 2D image_data
+   public static final int MAX_HEIGHT = 30;
+   public static final int MAX_WIDTH = 65;
    
-   private int data[][];
+   // where image is stored
+   private boolean image_data[][];
    
    BarcodeImage()
    {
       int row, col;
-      data = new int[MAX_HEIGHT][MAX_WIDTH];
-      for ( row = 0; row < data.length; row++ )
-         for ( col = 0; col < data[row].length; col++ )
-            data[row][col] = 0;
+      image_data = new boolean[MAX_HEIGHT][MAX_WIDTH];
+      for ( row = 0; row < image_data.length; row++ )
+         for ( col = 0; col < image_data[row].length; col++ )
+            image_data[row][col] = false;
    }
    
-   BarcodeImage(int[][] intData)
+   BarcodeImage(boolean[][] booleanData)
    {
       this();
       int row, col;
       
-      if ( !checkSize( intData ) )
+      if ( !checkSize( booleanData ) )
          return;  // silent, but there's an error, for sure.
 
-      for ( row = 0; row < intData.length; row++ )
-         for ( col = 0; col < intData[row].length; col++ )
-            data[row][col] = intData[row][col];
+      for ( row = 0; row < booleanData.length; row++ )
+         for ( col = 0; col < booleanData[row].length; col++ )
+            image_data[row][col] = booleanData[row][col];
    }
 
    
-   private boolean checkSize(int[][] data )
+   private boolean checkSize(boolean[][] image_data )
    {
-      if (data == null)
+      if (image_data == null)
          return false;
-      if (data.length > MAX_HEIGHT)
+      if (image_data.length > MAX_HEIGHT)
          return false;
-      if (data[0].length > MAX_WIDTH) // since rectangle, only check row 0
+      if (image_data[0].length > MAX_WIDTH) // since rectangle, only check row 0
          return false;
       return true;
    }
@@ -66,14 +68,14 @@ class BarcodeImage implements Cloneable
    {
       int row, col;
       
-      // always do this first - parent will clone its data correctly
+      // always do this first - parent will clone its image_data correctly
       BarcodeImage newBc = (BarcodeImage)super.clone();
       
       // now do the immediate class member objects
-      newBc.data = new int[MAX_HEIGHT][MAX_WIDTH];
+      newBc.image_data = new int[MAX_HEIGHT][MAX_WIDTH];
       for ( row = 0; row < MAX_HEIGHT; row++ )
          for ( col = 0; col < MAX_WIDTH; col++ )
-            newBc.data[row][col] = this.data[row][col];
+            newBc.image_data[row][col] = this.image_data[row][col];
       
       return newBc;
    }
@@ -82,14 +84,14 @@ class BarcodeImage implements Cloneable
    {
       if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
          return false;
-      data[row][col] = val;
+      image_data[row][col] = val;
       return true;
    }
    public int getElement(int row, int col)
    {
       if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
          return Integer.MAX_VALUE; // use as an error (lame, but easy)
-      return data[row][col];
+      return image_data[row][col];
    }
    
    
@@ -108,7 +110,7 @@ class BarcodeImage implements Cloneable
       {
          System.out.print("|");
          for ( col = 0; col < BarcodeImage.MAX_WIDTH; col++ )
-            System.out.print(data[row][col]);
+            System.out.print(image_data[row][col]);
          System.out.println("|");
       }
       
