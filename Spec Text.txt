@@ -39,10 +39,10 @@ every conceivable size or null error.  Smaller is okay.  Bigger or null is not.
 (check)
 
 Optional - A displayToConsole() method that is useful for debugging this class,
- but not very useful for the assignment at large.
+ but not very useful for the assignment at large. (check, needs testing)
  
 A clone() method that overrides the method of that name in Cloneable interface.
-This is covered in detail in the modules.
+This is covered in detail in the modules. (check, needs testing)
 
 
 

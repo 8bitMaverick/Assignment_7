@@ -2,11 +2,39 @@ public class Foothill
 {
    public static void main(String[] args) throws CloneNotSupportedException
    {
-      String[] userArray = {
-            "*", " ", "*", " ", "*",
-            " ", "*", "*", "*", " ",
-            "*", " ", "*", " ", "*"
-            };
+      /*String[] userArray = 
+         { 
+            "                                      ",
+            "                                      ",
+            "                                      ",
+            "* * * * * * * * * * * * * * * * *     ",
+            "*                                *    ",
+            "**** * ****** ** ****** *** ****      ",
+            "* ********************************    ",
+            "*    *   *  * *  *   *  *   *  *      ",
+            "* **    *      *   **    *       *    ",
+            "****** ** *** **  ***** * * *         ",
+            "* ***  ****    * *  **        ** *    ",
+            "* * *   * **   *  *** *   *  * **     ",
+            "**********************************    "
+         };*/
+      
+      String[] userArray = 
+         { 
+            "                                  ",
+            "                                  ",
+            "                                  ",
+            "* * * * * * * * * * * * * * * * * ",
+            "*                                *",
+            "**** * ****** ** ****** *** ****  ",
+            "* ********************************",
+            "*    *   *  * *  *   *  *   *  *  ",
+            "* **    *      *   **    *       *",
+            "****** ** *** **  ***** * * *     ",
+            "* ***  ****    * *  **        ** *",
+            "* * *   * **   *  *** *   *  * ** ",
+            "**********************************"
+         };
       
       BarcodeImage imObj1 = new BarcodeImage(userArray);
       BarcodeImage imObj2 = (BarcodeImage)imObj1.clone();
@@ -16,8 +44,8 @@ public class Foothill
       imObj1.setPixel(4, 0, true);
      
       // First secret message
-      imObj1.display(); 
-      imObj2.display();
+      imObj1.displayToConsole(); 
+      imObj2.displayToConsole();
    }   
 }
 
@@ -47,9 +75,19 @@ class BarcodeImage implements Cloneable
       if ( !checkSize( str_data ) )
          return;  // silent, but there's an error, for sure.
       
-      /*for ( row = 0; row < str_data.length; row++ )
-         for ( col = 0; col < str_data[row].length; col++ )
-            image_data[row][col] = str_data[row][col];*/
+      System.out.println(str_data[6]);
+      
+      for ( row = 0; row < str_data.length; row++ )
+      {
+         char[] char_data = str_data[row].toCharArray();
+         for ( col = 0; col < char_data.length; col++)
+         {
+            if (char_data[col] == '*')
+               image_data[row][col] = true;
+            else
+               image_data[row][col] = false;
+         }
+      }
    }
 
    
@@ -78,6 +116,7 @@ class BarcodeImage implements Cloneable
       return newBc;
    }
    
+   // mutator
    public boolean setPixel(int row, int col, boolean value)
    {
       if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
@@ -85,6 +124,8 @@ class BarcodeImage implements Cloneable
       image_data[row][col] = value;
       return value;
    }
+   
+   // accessor
    public boolean getPixel(int row, int col)
    {
       if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
@@ -93,7 +134,7 @@ class BarcodeImage implements Cloneable
    }
    
    
-   public void display()
+   public void displayToConsole()
    {
       int row, col;
       
