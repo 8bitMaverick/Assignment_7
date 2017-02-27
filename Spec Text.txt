@@ -27,7 +27,7 @@ Default Constructor -  instantiates a 2D array (MAX_HEIGHT x MAX_WIDTH) and
 stuffs it all with blanks (false). (check)
 
 BarcodeImage(String[] str_data) -takes a 1D array of Strings and converts it to
- the internal 2D array of booleans. 
+ the internal 2D array of booleans. (check)
  
 Accessor and mutator for each bit in the image: (check)
 boolean getPixel(int row, int col) (check)
@@ -39,10 +39,10 @@ every conceivable size or null error.  Smaller is okay.  Bigger or null is not.
 (check)
 
 Optional - A displayToConsole() method that is useful for debugging this class,
- but not very useful for the assignment at large. (check, needs testing)
+ but not very useful for the assignment at large. (check)
  
 A clone() method that overrides the method of that name in Cloneable interface.
-This is covered in detail in the modules. (check, needs testing)
+This is covered in detail in the modules. (check)
 
 
 

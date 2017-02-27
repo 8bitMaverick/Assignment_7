@@ -4,31 +4,33 @@ public class Foothill
    {
       String[] userArray = 
          { 
-            "                                      ",
-            "                                      ",
-            "                                      ",
-            "* * * * * * * * * * * * * * * * *     ",
-            "*                                *    ",
-            "**** * ****** ** ****** *** ****      ",
-            "* ********************************    ",
-            "*    *   *  * *  *   *  *   *  *      ",
-            "* **    *      *   **    *       *    ",
-            "****** ** *** **  ***** * * *         ",
-            "* ***  ****    * *  **        ** *    ",
-            "* * *   * **   *  *** *   *  * **     ",
-            "**********************************    "
+               "                                      ",
+               "                                      ",
+               "                                      ",
+               "* * * * * * * * * * * * * * * * *     ",
+               "*                                *    ",
+               "**** * ****** ** ****** *** ****      ",
+               "* ********************************    ",
+               "*    *   *  * *  *   *  *   *  *      ",
+               "* **    *      *   **    *       *    ",
+               "****** ** *** **  ***** * * *         ",
+               "* ***  ****    * *  **        ** *    ",
+               "* * *   * **   *  *** *   *  * **     ",
+               "**********************************    "
          };
-      
+
       BarcodeImage imObj1 = new BarcodeImage(userArray);
       BarcodeImage imObj2 = (BarcodeImage)imObj1.clone();
-      
+      BarcodeImage imObj3 = new BarcodeImage();
+
       // change ONLY the first object
       imObj1.setPixel(2, 2, true);
       imObj1.setPixel(4, 0, false);
-     
+
       // First secret message
       imObj1.displayToConsole(); 
       imObj2.displayToConsole();
+      imObj3.displayToConsole();
    }   
 }
 
@@ -37,10 +39,11 @@ class BarcodeImage implements Cloneable
    // exact internal dimensions of 2D data
    public static final int MAX_HEIGHT = 30;
    public static final int MAX_WIDTH = 65;
-   
-   // where image is stored
+
+   // where the incoming image is stored
    private boolean image_data[][];
-   
+
+   // default constructor
    BarcodeImage()
    {
       int row, col;
@@ -49,17 +52,17 @@ class BarcodeImage implements Cloneable
          for ( col = 0; col < image_data[row].length; col++ )
             image_data[row][col] = false;
    }
-   
+
+   /* 1-parameter constructor
+      converts given 1D String array into internal 2D boolean array */
    BarcodeImage(String[] str_data)
    {
       this();
       int row, col;
-      
+
       if ( !checkSize( str_data ) )
          return;  // silent, but there's an error, for sure.
-      
-      
-      
+
       for ( row = 0; row < str_data.length; row++ )
       {
          char[] char_data = str_data[row].toCharArray();
@@ -73,7 +76,6 @@ class BarcodeImage implements Cloneable
       }
    }
 
-   
    private boolean checkSize(String[] data )
    {
       if (data == null)
@@ -82,23 +84,23 @@ class BarcodeImage implements Cloneable
          return false;
       return true;
    }
-   
+
    public Object clone() throws CloneNotSupportedException
    {
       int row, col;
-      
+
       // always do this first - parent will clone its image_data correctly
       BarcodeImage newBc = (BarcodeImage)super.clone();
-      
+
       // now do the immediate class member objects
       newBc.image_data = new boolean[MAX_HEIGHT][MAX_WIDTH];
       for ( row = 0; row < MAX_HEIGHT; row++ )
          for ( col = 0; col < MAX_WIDTH; col++ )
             newBc.image_data[row][col] = this.image_data[row][col];
-      
+
       return newBc;
    }
-   
+
    // mutator
    public boolean setPixel(int row, int col, boolean value)
    {
@@ -107,7 +109,7 @@ class BarcodeImage implements Cloneable
       image_data[row][col] = value;
       return value;
    }
-   
+
    // accessor
    public boolean getPixel(int row, int col)
    {
@@ -115,18 +117,18 @@ class BarcodeImage implements Cloneable
          return false; // use as an error (lame, but easy)
       return image_data[row][col];
    }
-   
+
    // for debugging BarcodeImage only, will not be used otherwise
    public void displayToConsole()
    {
       int row, col;
-      
+
       // top row border
       System.out.println();
       for ( col = 0; col < BarcodeImage.MAX_WIDTH + 2; col++ )
          System.out.print("-");
       System.out.println();
-      
+
       // now each row from 0 to MAX_WIDTH, adding border chars
       for ( row = 0; row < BarcodeImage.MAX_HEIGHT; row++ )
       {
@@ -140,30 +142,10 @@ class BarcodeImage implements Cloneable
          }
          System.out.println("|");
       }
-      
+
       // bottom
       for (col = 0; col < BarcodeImage.MAX_WIDTH + 2; col++)
          System.out.print("-");
       System.out.println();
    }
 }
-
-/*-----------------------------OUTPUT---------------------------------------------
-
--------
-|11111|
-|22222|
-|33933|
-|00000|
-|90000|
--------
-
--------
-|11111|
-|22222|
-|33333|
-|00000|
-|00000|
--------
-
-------------------------------------------------------------------------*/
