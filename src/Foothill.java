@@ -149,6 +149,31 @@ class DataMatrix implements BarcodeIO
       return false;
    }
    
+   // helper methods
+   private char readCharFromCol(int col)
+   {
+      return ' ';
+   }
+   
+   private char writeCharToCol(int col, int code)
+   {
+      return ' ';
+   }
+   
+   public void displayRawImage()
+   {
+      
+   }
+   
+   private void clearImage()
+   {
+      int row, col;
+      for ( row = 0; row < BarcodeImage.MAX_HEIGHT; row++ )
+         for ( col = 0; col < BarcodeImage.MAX_WIDTH; col++ )
+            image.setPixel(row, col, false);
+   }
+   
+   // display methods
    public void displayTextToConsole()
    {
       
@@ -156,7 +181,10 @@ class DataMatrix implements BarcodeIO
    
    public void displayImageToConsole()
    {
-      
+      // BarcodeImage displayToConsole() for help?
+      // display only the relevant portion of the image
+      // clipping the excess blank/white from the top and right
+      // display in border of | and -
    }
    
 }
