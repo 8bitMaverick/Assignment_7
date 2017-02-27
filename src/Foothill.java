@@ -49,6 +49,7 @@ interface BarcodeIO
    public void displayImageToConsole();
 }
 
+// DataMatrix class-------------------------------------------------------------
 class DataMatrix implements BarcodeIO
 {
   
@@ -63,7 +64,7 @@ class DataMatrix implements BarcodeIO
    
    // a single internal copy of any text read-in
    // OR passed-into the constructor
-   // OR created by BarcodeIO's translateImageToText().
+   // OR created by BarcodeIO's translateImageToText()
    private String text;
  
    // represent the actual portion of the BarcodeImage that has real signal
@@ -141,12 +142,12 @@ class DataMatrix implements BarcodeIO
       return actualWidth;
    }
    
-   private int computeSignalWidth()
+   private int computeSignalHeight()
    {
       return 0;
    }
    
-   private int computeSignalHeight()
+   private int computeSignalWidth()
    {
       return 0;
    }
@@ -212,9 +213,9 @@ class DataMatrix implements BarcodeIO
          System.out.print("-");
       System.out.println();
    }
-   
 }
 
+// Barcode class----------------------------------------------------------------
 class BarcodeImage implements Cloneable
 {
    // exact internal dimensions of 2D data
@@ -224,7 +225,7 @@ class BarcodeImage implements Cloneable
    // where the incoming image is stored
    private boolean image_data[][];
 
-   // default constructor
+   // default constructor, instantiates max height/width image filled w/"blanks"
    BarcodeImage()
    {
       int row, col;
@@ -253,7 +254,8 @@ class BarcodeImage implements Cloneable
                image_data[row + (MAX_HEIGHT - str_data.length)][col] = true;
       }
    }
-
+   
+   // validator
    private boolean checkSize(String[] data )
    {
       if (data == null)
@@ -262,7 +264,8 @@ class BarcodeImage implements Cloneable
          return false;
       return true;
    }
-
+   
+   // clone method
    public Object clone() throws CloneNotSupportedException
    {
       int row, col;
@@ -306,7 +309,7 @@ class BarcodeImage implements Cloneable
       return image_data[0].length;
    }
 
-   // for debugging BarcodeImage only, will not be used otherwise
+   // display for debugging BarcodeImage only, will not be used otherwise
    public void displayToConsole()
    {
       int row, col;
