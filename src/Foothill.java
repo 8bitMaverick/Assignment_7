@@ -67,12 +67,8 @@ class BarcodeImage implements Cloneable
       {
          char[] char_data = str_data[row].toCharArray();
          for ( col = 0; col < char_data.length; col++)
-         {
             if (char_data[col] == '*')
                image_data[row][col] = true;
-            else
-               image_data[row][col] = false;
-         }
       }
    }
 
