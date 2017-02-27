@@ -2,11 +2,11 @@ public class Foothill
 {
    public static void main(String[] args) throws CloneNotSupportedException
    {
-      int[][] userArray = {
-            {1, 1, 1, 1, 1},
-            {2, 2, 2, 2, 2},
-            {3, 3, 3, 3, 3},
-      };
+      String[] userArray = {
+            "*", " ", "*", " ", "*",
+            " ", "*", "*", "*", " ",
+            "*", " ", "*", " ", "*"
+            };
       
       BarcodeImage imObj1 = new BarcodeImage(userArray);
       BarcodeImage imObj2 = (BarcodeImage)imObj1.clone();
@@ -39,21 +39,21 @@ class BarcodeImage implements Cloneable
             image_data[row][col] = false;
    }
    
-   BarcodeImage(boolean[][] booleanData)
+   BarcodeImage(String[] str_data)
    {
       this();
       int row, col;
       
-      if ( !checkSize( booleanData ) )
+      if ( !checkSize( str_data ) )
          return;  // silent, but there's an error, for sure.
 
-      for ( row = 0; row < booleanData.length; row++ )
-         for ( col = 0; col < booleanData[row].length; col++ )
-            image_data[row][col] = booleanData[row][col];
+      for ( row = 0; row < str_data.length; row++ )
+         for ( col = 0; col < str_data[row].length; col++ )
+            image_data[row][col] = str_data[row][col];
    }
 
    
-   private boolean checkSize(boolean[][] image_data )
+   private boolean checkSize(String[] str_data )
    {
       if (image_data == null)
          return false;
