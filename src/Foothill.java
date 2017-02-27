@@ -33,8 +33,9 @@ public class Foothill
       imObj2.displayToConsole();
       imObj3.displayToConsole();
       
-      imObj2.clearImage();
-      imObj2.displayToConsole();
+      // test clearImage later when DataMatrix setup
+      // imObj2.clearImage();
+      // imObj2.displayToConsole();
    }   
 }
 
