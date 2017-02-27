@@ -8,8 +8,8 @@ public class Foothill
             {3, 3, 3, 3, 3},
       };
       
-      TwoDimImage imObj1 = new TwoDimImage(userArray);
-      TwoDimImage imObj2 = (TwoDimImage)imObj1.clone();
+      BarcodeImage imObj1 = new BarcodeImage(userArray);
+      BarcodeImage imObj2 = (BarcodeImage)imObj1.clone();
       
       // change ONLY the first object
       imObj1.setElement(2, 2, 9);
@@ -21,14 +21,14 @@ public class Foothill
    }   
 }
 
-class TwoDimImage implements Cloneable
+class BarcodeImage implements Cloneable
 {
    public static final int MAX_HEIGHT = 5;
    public static final int MAX_WIDTH = 5;
    
    private int data[][];
    
-   TwoDimImage()
+   BarcodeImage()
    {
       int row, col;
       data = new int[MAX_HEIGHT][MAX_WIDTH];
@@ -37,7 +37,7 @@ class TwoDimImage implements Cloneable
             data[row][col] = 0;
    }
    
-   TwoDimImage(int[][] intData)
+   BarcodeImage(int[][] intData)
    {
       this();
       int row, col;
@@ -67,7 +67,7 @@ class TwoDimImage implements Cloneable
       int row, col;
       
       // always do this first - parent will clone its data correctly
-      TwoDimImage newBc = (TwoDimImage)super.clone();
+      BarcodeImage newBc = (BarcodeImage)super.clone();
       
       // now do the immediate class member objects
       newBc.data = new int[MAX_HEIGHT][MAX_WIDTH];
@@ -99,21 +99,21 @@ class TwoDimImage implements Cloneable
       
       // top row border
       System.out.println();
-      for ( col = 0; col < TwoDimImage.MAX_WIDTH + 2; col++ )
+      for ( col = 0; col < BarcodeImage.MAX_WIDTH + 2; col++ )
          System.out.print("-");
       System.out.println();
       
       // now each row from 0 to MAX_WIDTH, adding border chars
-      for ( row = 0; row < TwoDimImage.MAX_HEIGHT; row++ )
+      for ( row = 0; row < BarcodeImage.MAX_HEIGHT; row++ )
       {
          System.out.print("|");
-         for ( col = 0; col < TwoDimImage.MAX_WIDTH; col++ )
+         for ( col = 0; col < BarcodeImage.MAX_WIDTH; col++ )
             System.out.print(data[row][col]);
          System.out.println("|");
       }
       
       // bottom
-      for (col = 0; col < TwoDimImage.MAX_WIDTH + 2; col++)
+      for (col = 0; col < BarcodeImage.MAX_WIDTH + 2; col++)
          System.out.print("-");
       System.out.println();
    }
