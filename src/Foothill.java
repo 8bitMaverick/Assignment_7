@@ -172,6 +172,17 @@ class DataMatrix implements BarcodeIO
       return ' ';
    }
    
+   // display methods
+   public void displayTextToConsole()
+   {
+      
+   }
+   
+   public void displayImageToConsole()
+   {
+      
+   }
+   
    public void displayRawImage()
    {
       int row, col;
@@ -200,17 +211,6 @@ class DataMatrix implements BarcodeIO
       for (col = 0; col < BarcodeImage.MAX_WIDTH + 2; col++)
          System.out.print("-");
       System.out.println();
-   }
-   
-   // display methods
-   public void displayTextToConsole()
-   {
-      
-   }
-   
-   public void displayImageToConsole()
-   {
-      
    }
    
 }
