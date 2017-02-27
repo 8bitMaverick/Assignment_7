@@ -2,110 +2,128 @@ public class Foothill
 {
    public static void main(String[] args)
    {
-      Card[][] deck = new Card[4][13];
+      int[][] userArray = {
+            {1, 1, 1, 1, 1},
+            {2, 2, 2, 2, 2},
+            {3, 3, 3, 3, 3},
+      };
+      
+      TwoDimImage imObj1 = new TwoDimImage(userArray);
+      TwoDimImage imObj2 = new TwoDimImage(imObj1);
+      
+      // change ONLY the first object
+      imObj1.setElement(2, 2, 9);
+      imObj1.setElement(4, 0, 9);
+     
+      // First secret message
+      imObj1.display(); 
+      imObj2.display();
+   }   
+}
+
+class TwoDimImage
+{
+   public static final int MAX_HEIGHT = 5;
+   public static final int MAX_WIDTH = 5;
+   
+   private int data[][];
+   
+   TwoDimImage()
+   {
       int row, col;
-      Card.Suit st;
-      char val;
+      data = new int[MAX_HEIGHT][MAX_WIDTH];
+      for ( row = 0; row < data.length; row++ )
+         for ( col = 0; col < data[row].length; col++ )
+            data[row][col] = 0;
+   }
+   
+   TwoDimImage(int[][] intData)
+   {
+      this();
+      int row, col;
       
-      // instantiate the array elements
-      for (row = 0; row < deck.length; row++)
-         for (col = 0; col < deck[row].length; col++)
-            deck[row][col] = new Card();
-    
-      // assign values to array elements
-      for (row = 0; row < deck.length; row++)
-      { 
-         // set the suit for this loop pass
-         st = Card.Suit.values()[row];
- 
-         // now set all the values for this suit
-         deck[row][0].set('A', st);
-         for (val='2', col = 1; val <= '9'; val++, col++)
-            deck[row][col].set(val, st);
-         deck[row][9].set('T', st);
-         deck[row][10].set('J', st);
-         deck[row][11].set('Q', st);
-         deck[row][12].set('K', st);
-      }
+      if ( !checkSize( intData ) )
+         return;  // silent, but there's an error, for sure.
+
+      for ( row = 0; row < intData.length; row++ )
+         for ( col = 0; col < intData[row].length; col ++ )
+            data[row][col] = intData[row][col];
+   }
+   
+   TwoDimImage(TwoDimImage tdi)
+   {
+      this.data = tdi.data;
+   }
+   
+   private boolean checkSize(int[][] data )
+   {
+      if (data == null)
+         return false;
+      if (data.length > MAX_HEIGHT)
+         return false;
+      if (data[0].length > MAX_WIDTH)  // since rectangle, need only check row 0
+         return false;
+      return true;
+   }
+   
+   public boolean setElement(int row, int col, int val)
+   {
+      if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
+         return false;
+      data[row][col] = val;
+      return true;
+   }
+   public int getElement(int row, int col)
+   {
+      if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
+         return Integer.MAX_VALUE; // use as an error (lame, but easy)
+      return data[row][col];
+   }
+   
+   
+   public void display()
+   {
+      int row, col;
       
-      // test compareTo with queen of spades
-      Card queenOfSpades = new Card('q', Card.Suit.spades);
-      String phrase;
-      for ( row = 0; row < deck.length; row++)
+      // top row border
+      System.out.println();
+      for ( col = 0; col < TwoDimImage.MAX_WIDTH + 2; col++ )
+         System.out.print("-");
+      System.out.println();
+      
+      // now each row from 0 to MAX_WIDTH, adding border chars
+      for (row = 0; row < TwoDimImage.MAX_HEIGHT; row++)
       {
-         for ( col = 0; col < deck[row].length; col ++)
-         {
-            if ( queenOfSpades.compareTo(deck[row][col]) < 0 )
-                  phrase = " is less than ";
-            else if ( queenOfSpades.compareTo(deck[row][col]) > 0 )
-                  phrase = " is greater than ";
-            else
-                  phrase = " is equal to ";
-                 
-            System.out.println(queenOfSpades + phrase
-                  + deck[row][col] );
-         }   
+         System.out.print("|");
+         for (col = 0; col < TwoDimImage.MAX_WIDTH; col++)
+            System.out.print(data[row][col]);
+         System.out.println("|");
       }
+      
+      // bottom
+      for ( col = 0; col < TwoDimImage.MAX_WIDTH + 2; col++ )
+         System.out.print("-");
+      System.out.println();
    }
 }
-class Card implements Comparable
-{   
 
-   // type and constants
-   public enum Suit { clubs, diamonds, hearts, spades }
 
-   // for ordering
-   public static char[] valueRanks = { '2', '3', '4', '5', '6', '7', '8', '9', 
-      'T', 'J', 'Q', 'K', 'A'};
-   static Suit[] suitRanks = {Suit.clubs, Suit.diamonds, Suit.hearts, 
-      Suit.spades};
-   static int numValsInOrderingArray = 13;
+/*-----------------------------OUTPUT-----------------------------------
 
-   // private data
-   private char value;
-   private Suit suit;
+-------
+|11111|
+|22222|
+|33933|
+|00000|
+|90000|
+-------
 
-   // sort member methods
-   public int compareTo(Object other)
-   {
-      if (! (other instanceof Card) )
-         return -1;
-      
-      Card otherCard = (Card)other;
-      
-      if (this.value == otherCard.value)
-         return ( getSuitRank(this.suit) - getSuitRank(otherCard.suit) );
+-------
+|11111|
+|22222|
+|33933|
+|00000|
+|90000|
+-------
 
-      return ( 
-            getValueRank(this.value) 
-               - getValueRank(otherCard.value) 
-            );
-   }
-
-   // helpers for compareTo()
-   public static int getSuitRank(Suit st)
-   {
-      int k;
-
-      for (k = 0; k < 4; k++) 
-         if (suitRanks[k] == st)
-            return k;
-
-      // should not happen
-      return 0;
-   }
-
-   public  static int getValueRank(char val)
-   {
-      int k;
-
-      for (k = 0; k < numValsInOrderingArray; k++) 
-         if (valueRanks[k] == val)
-            return k;
-
-      // should not happen
-      return 0;
-   }
-
-   // lots of irrelevant things omitted
-}
+------------------------------------------------------------------------*/
