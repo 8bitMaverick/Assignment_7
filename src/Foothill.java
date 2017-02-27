@@ -45,6 +45,83 @@ interface BarcodeIO
    public void displayImageToConsole();
 }
 
+class DataMatrix implements BarcodeIO
+{
+  
+   public static final char BLACK_CHAR = '*';
+   public static final char WHITE_CHAR = ' ';
+   
+   // a single internal copy of any image scanned-in
+   // OR passed-into the constructor
+   // OR created by BarcodeIO's generateImageFromText()
+   private BarcodeImage image;
+   
+   // a single internal copy of any text read-in
+   // OR passed-into the constructor
+   // OR created by BarcodeIO's translateImageToText().
+   private String text;
+ 
+   // represent the actual portion of the BarcodeImage that has real signal
+   private int actualHeight, actualWidth;
+   
+   // default constructor
+   DataMatrix()
+   {
+      image = new BarcodeImage();
+      text = "undefined";
+      actualHeight = 0;
+      actualWidth = 0;
+   }
+   
+   // 1-parameter constructor, modifies image only
+   DataMatrix(BarcodeImage image)
+   {
+      this();
+      scan(image);
+   }
+   
+   // 1-parameter constructor, modifies text only
+   DataMatrix(String text)
+   {
+      this();
+      readText(text);
+   }
+   
+   public boolean scan(BarcodeImage bc)
+   {
+      BarcodeImage temp = (BarcodeImage)bc.clone();
+      actualHeight = getImageHeight(bc);
+      actualWidth = getImageWidth(bc);
+      return false;
+   }
+   
+   public boolean readText(String text)
+   {
+      return false;
+   }
+   
+   public boolean generateImageFromText()
+   {
+      return false;
+   }
+   
+   public boolean translateImageToText()
+   {
+      return false;
+   }
+   
+   public void displayTextToConsole()
+   {
+      
+   }
+   
+   public void displayImageToConsole()
+   {
+      
+   }
+   
+}
+
 class BarcodeImage implements Cloneable
 {
    // exact internal dimensions of 2D data
@@ -117,12 +194,22 @@ class BarcodeImage implements Cloneable
       return value;
    }
 
-   // accessor
+   // accessors
    public boolean getPixel(int row, int col)
    {
       if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
          return false; // use as an error (lame, but easy)
       return image_data[row][col];
+   }
+   
+   public int getImageHeight(BarcodeImage bc)
+   {
+      return image_data.length;
+   }
+   
+   public int getImageWidth(BarcodeImage bc)
+   {
+      return image_data[0].length;
    }
 
    // for debugging BarcodeImage only, will not be used otherwise
