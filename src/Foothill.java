@@ -122,6 +122,14 @@ class DataMatrix implements BarcodeIO
       return true;
    }
    
+   private void clearImage()
+   {
+      int row, col;
+      for ( row = 0; row < BarcodeImage.MAX_HEIGHT; row++ )
+         for ( col = 0; col < BarcodeImage.MAX_WIDTH; col++ )
+            image.setPixel(row, col, false);
+   }
+   
    // accessors
    public int getActualHeight()
    {
@@ -192,14 +200,6 @@ class DataMatrix implements BarcodeIO
       for (col = 0; col < BarcodeImage.MAX_WIDTH + 2; col++)
          System.out.print("-");
       System.out.println();
-   }
-   
-   private void clearImage()
-   {
-      int row, col;
-      for ( row = 0; row < BarcodeImage.MAX_HEIGHT; row++ )
-         for ( col = 0; col < BarcodeImage.MAX_WIDTH; col++ )
-            image.setPixel(row, col, false);
    }
    
    // display methods
