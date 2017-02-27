@@ -32,6 +32,9 @@ public class Foothill
       imObj1.displayToConsole(); 
       imObj2.displayToConsole();
       imObj3.displayToConsole();
+      
+      imObj2.clearImage();
+      imObj2.displayToConsole();
    }   
 }
 
