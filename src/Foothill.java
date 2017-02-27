@@ -2,7 +2,7 @@ public class Foothill
 {
    public static void main(String[] args) throws CloneNotSupportedException
    {
-      /* BarcodeImage main code
+         // BarcodeImage main code
          String[] userArray = 
          { 
                "                                      ",
@@ -31,7 +31,7 @@ public class Foothill
       //First secret message
       imObj1.displayToConsole(); 
       imObj2.displayToConsole();
-      imObj3.displayToConsole();*/
+      imObj3.displayToConsole();
    }   
 }
 
@@ -129,6 +129,16 @@ class DataMatrix implements BarcodeIO
       return actualWidth;
    }
    
+   private int computeSignalWidth()
+   {
+      return 0;
+   }
+   
+   private int computeSignalHeight()
+   {
+      return 0;
+   }
+   
    public boolean generateImageFromText()
    {
       return false;
@@ -185,7 +195,7 @@ class BarcodeImage implements Cloneable
          char[] char_data = str_data[row].toCharArray();
          for ( col = 0; col < char_data.length; col++)
             if (char_data[col] == '*')
-               image_data[row][col] = true;
+               image_data[row + (MAX_HEIGHT - str_data.length)][col] = true;
       }
    }
 
