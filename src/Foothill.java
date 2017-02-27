@@ -108,14 +108,25 @@ class DataMatrix implements BarcodeIO
          e.printStackTrace();
       }
       
-      if (actualHeight < 0 || actualHeight >= BarcodeImage.MAX_HEIGHT
-            || actualWidth < 0 || actualWidth >= BarcodeImage.MAX_WIDTH)
+      if (actualHeight > BarcodeImage.MAX_HEIGHT
+            || actualWidth > BarcodeImage.MAX_WIDTH)
          return false;
       
       this.actualHeight = image.getImageHeight();
       this.actualWidth = image.getImageWidth(0);
       
       return true;
+   }
+   
+   // accessors
+   public int getActualHeight()
+   {
+      return actualHeight;
+   }
+   
+   public int getActualWidth()
+   {
+      return actualWidth;
    }
    
    public boolean generateImageFromText()
