@@ -52,7 +52,7 @@ class TwoDimImage
    
    TwoDimImage(TwoDimImage tdi)
    {
-      this.data = tdi.data;
+      this(tdi.data);
    }
    
    private boolean checkSize(int[][] data )
