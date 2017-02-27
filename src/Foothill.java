@@ -24,9 +24,9 @@ public class Foothill
       BarcodeImage imObj2 = (BarcodeImage)imObj1.clone();
       BarcodeImage imObj3 = new BarcodeImage();
 
-      // change ONLY the first object
+      /* change ONLY the first object
       imObj1.setPixel(2, 2, true);
-      imObj1.setPixel(4, 0, false);
+      imObj1.setPixel(4, 0, false);*/
 
       //First secret message
       imObj1.displayToConsole(); 
@@ -181,7 +181,8 @@ class BarcodeImage implements Cloneable
    }
 
    /* 1-parameter constructor
-      converts given 1D String array into internal 2D boolean array */
+      converts given 1D String array into internal 2D boolean array
+      packs smaller than max height/width image into lower left corner*/
    BarcodeImage(String[] str_data)
    {
       this();
