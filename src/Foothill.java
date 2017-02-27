@@ -34,6 +34,8 @@ public class Foothill
    }   
 }
 
+
+
 class BarcodeImage implements Cloneable
 {
    // exact internal dimensions of 2D data
