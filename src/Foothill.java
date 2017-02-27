@@ -2,7 +2,7 @@ public class Foothill
 {
    public static void main(String[] args) throws CloneNotSupportedException
    {
-      /*String[] userArray = 
+      String[] userArray = 
          { 
             "                                      ",
             "                                      ",
@@ -17,31 +17,14 @@ public class Foothill
             "* ***  ****    * *  **        ** *    ",
             "* * *   * **   *  *** *   *  * **     ",
             "**********************************    "
-         };*/
-      
-      String[] userArray = 
-         { 
-            "                                  ",
-            "                                  ",
-            "                                  ",
-            "* * * * * * * * * * * * * * * * * ",
-            "*                                *",
-            "**** * ****** ** ****** *** ****  ",
-            "* ********************************",
-            "*    *   *  * *  *   *  *   *  *  ",
-            "* **    *      *   **    *       *",
-            "****** ** *** **  ***** * * *     ",
-            "* ***  ****    * *  **        ** *",
-            "* * *   * **   *  *** *   *  * ** ",
-            "**********************************"
          };
       
       BarcodeImage imObj1 = new BarcodeImage(userArray);
       BarcodeImage imObj2 = (BarcodeImage)imObj1.clone();
       
       // change ONLY the first object
-      imObj1.setPixel(2, 2, false);
-      imObj1.setPixel(4, 0, true);
+      imObj1.setPixel(2, 2, true);
+      imObj1.setPixel(4, 0, false);
      
       // First secret message
       imObj1.displayToConsole(); 
@@ -51,7 +34,7 @@ public class Foothill
 
 class BarcodeImage implements Cloneable
 {
-   // exact internal dimensions of 2D image_data
+   // exact internal dimensions of 2D data
    public static final int MAX_HEIGHT = 30;
    public static final int MAX_WIDTH = 65;
    
@@ -75,7 +58,7 @@ class BarcodeImage implements Cloneable
       if ( !checkSize( str_data ) )
          return;  // silent, but there's an error, for sure.
       
-      System.out.println(str_data[6]);
+      
       
       for ( row = 0; row < str_data.length; row++ )
       {
@@ -133,7 +116,7 @@ class BarcodeImage implements Cloneable
       return image_data[row][col];
    }
    
-   
+   // for debugging BarcodeImage only, will not be used otherwise
    public void displayToConsole()
    {
       int row, col;
@@ -149,7 +132,12 @@ class BarcodeImage implements Cloneable
       {
          System.out.print("|");
          for ( col = 0; col < BarcodeImage.MAX_WIDTH; col++ )
-            System.out.print(image_data[row][col]);
+         {
+            if (image_data[row][col] == true)
+               System.out.print("*");
+            else
+               System.out.print(" ");
+         }
          System.out.println("|");
       }
       
