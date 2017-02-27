@@ -12,8 +12,11 @@ public static final int MAX_HEIGHT = 30; (check)
 public static final int MAX_WIDTH = 65; (check)
 The exact internal dimensions of 2D data. 
 
-private boolean[][] image_data This is where to store your image.  If the 
-incoming data is too large, instantiate memory anyway, but leave it blank (white). 
+private boolean[][] image_data (check) 
+This is where to store your image. (check)
+If the incoming data is too large, instantiate memory anyway,
+but leave it blank (white). (check) 
+
 This data will be false for elements that are white, and true for elements that 
 are black.
    
@@ -21,18 +24,19 @@ METHODS
 
 Constructors.  Two minimum, but you could have others:
 Default Constructor -  instantiates a 2D array (MAX_HEIGHT x MAX_WIDTH) and 
-stuffs it all with blanks (false).
+stuffs it all with blanks (false). (check)
 
 BarcodeImage(String[] str_data) -takes a 1D array of Strings and converts it to
  the internal 2D array of booleans. 
  
-Accessor and mutator for each bit in the image:  
-boolean getPixel(int row, int col)
-and boolean setPixel(int row, int col, boolean value);
+Accessor and mutator for each bit in the image: (check)
+boolean getPixel(int row, int col) (check)
+and boolean setPixel(int row, int col, boolean value); (check)
 
 Optional - A private utility method is highly recommended, but not required:  
 checkSize(String[] data)  It does the job of checking the incoming data for 
 every conceivable size or null error.  Smaller is okay.  Bigger or null is not.
+(check)
 
 Optional - A displayToConsole() method that is useful for debugging this class,
  but not very useful for the assignment at large.

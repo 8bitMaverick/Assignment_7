@@ -12,8 +12,8 @@ public class Foothill
       BarcodeImage imObj2 = (BarcodeImage)imObj1.clone();
       
       // change ONLY the first object
-      imObj1.setElement(2, 2, 9);
-      imObj1.setElement(4, 0, 9);
+      imObj1.setPixel(2, 2, false);
+      imObj1.setPixel(4, 0, true);
      
       // First secret message
       imObj1.display(); 
@@ -46,20 +46,18 @@ class BarcodeImage implements Cloneable
       
       if ( !checkSize( str_data ) )
          return;  // silent, but there's an error, for sure.
-
-      for ( row = 0; row < str_data.length; row++ )
+      
+      /*for ( row = 0; row < str_data.length; row++ )
          for ( col = 0; col < str_data[row].length; col++ )
-            image_data[row][col] = str_data[row][col];
+            image_data[row][col] = str_data[row][col];*/
    }
 
    
-   private boolean checkSize(String[] str_data )
+   private boolean checkSize(String[] data )
    {
-      if (image_data == null)
+      if (data == null)
          return false;
-      if (image_data.length > MAX_HEIGHT)
-         return false;
-      if (image_data[0].length > MAX_WIDTH) // since rectangle, only check row 0
+      if (data.length > MAX_HEIGHT)
          return false;
       return true;
    }
@@ -72,7 +70,7 @@ class BarcodeImage implements Cloneable
       BarcodeImage newBc = (BarcodeImage)super.clone();
       
       // now do the immediate class member objects
-      newBc.image_data = new int[MAX_HEIGHT][MAX_WIDTH];
+      newBc.image_data = new boolean[MAX_HEIGHT][MAX_WIDTH];
       for ( row = 0; row < MAX_HEIGHT; row++ )
          for ( col = 0; col < MAX_WIDTH; col++ )
             newBc.image_data[row][col] = this.image_data[row][col];
@@ -80,17 +78,17 @@ class BarcodeImage implements Cloneable
       return newBc;
    }
    
-   public boolean setElement(int row, int col, int val)
+   public boolean setPixel(int row, int col, boolean value)
    {
       if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
          return false;
-      image_data[row][col] = val;
-      return true;
+      image_data[row][col] = value;
+      return value;
    }
-   public int getElement(int row, int col)
+   public boolean getPixel(int row, int col)
    {
       if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
-         return Integer.MAX_VALUE; // use as an error (lame, but easy)
+         return false; // use as an error (lame, but easy)
       return image_data[row][col];
    }
    
