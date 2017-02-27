@@ -2,7 +2,8 @@ public class Foothill
 {
    public static void main(String[] args) throws CloneNotSupportedException
    {
-      String[] userArray = 
+      /* BarcodeImage main code
+         String[] userArray = 
          { 
                "                                      ",
                "                                      ",
@@ -27,10 +28,10 @@ public class Foothill
       imObj1.setPixel(2, 2, true);
       imObj1.setPixel(4, 0, false);
 
-      // First secret message
+      //First secret message
       imObj1.displayToConsole(); 
       imObj2.displayToConsole();
-      imObj3.displayToConsole();
+      imObj3.displayToConsole();*/
    }   
 }
 
