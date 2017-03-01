@@ -1,9 +1,70 @@
+import java.lang.Math;
+
 public class Foothill
 {
-   public static void main(String[] args) throws CloneNotSupportedException
+   public static void main(String[] args)
    {
-         // BarcodeImage main code
-         String[] userArray = 
+      String[] sImageIn = 
+         { 
+               "                                      ",
+               "                                      ",
+               "* * * * * * * * * * * * * *           ",
+               "*                          *          ",
+               "***** **** **** ***** ****            ",
+               "****************************          ",
+               "*   *  * *  *   *  *  *  *            ",
+               "**       *   **  **        *          ",
+               "* **   *   * ** * * * *               ",
+               "**     *   ***    **    ** *          ",
+               "****  ****   **   ***  * **           ",
+               "****************************          "
+         };
+
+      String[] sImageIn_2 = 
+         { 
+               "                                          ",
+               "                                          ",
+               "* * * * * * * * * * * * * * * * * * *     ",
+               "*                                    *    ",
+               "**** *** **   ***** ****   *********      ",
+               "* ************ ************ **********    ",
+               "** *      *    *  * * *         * *       ",
+               "***   *  *           * **    *      **    ",
+               "* ** * *  *   * * * **  *   ***   ***     ",
+               "* *           **    *****  *   **   **    ",
+               "****  *  * *  * **  ** *   ** *  * *      ",
+               "**************************************    "
+         };
+
+      BarcodeImage bc = new BarcodeImage(sImageIn);
+      DataMatrix dm = new DataMatrix(bc);
+      bc.displayToConsole();
+      dm.translateImageToText();
+      dm.generateImageFromText();
+      //System.out.println(dm.computeSignalHeight());
+      
+
+      // First secret message
+      //dm.translateImageToText();
+      //dm.displayTextToConsole();
+      //dm.displayImageToConsole();
+
+      // second secret message
+      //bc = new BarcodeImage(sImageIn_2);
+      //dm.scan(bc);
+      //dm.translateImageToText();
+      //dm.displayTextToConsole();
+      //dm.displayImageToConsole();
+
+      // create your own message
+      //dm.readText("CS 1B will lead me to the CASH!");
+      //dm.generateImageFromText();
+      //dm.displayTextToConsole();
+      //dm.displayImageToConsole();
+
+      // BarcodeImage main code
+      
+      String[] userArray = 
          { 
                "                                      ",
                "                                      ",
@@ -20,19 +81,19 @@ public class Foothill
                "**********************************    "
          };
 
-      BarcodeImage imObj1 = new BarcodeImage(userArray);
-      BarcodeImage imObj2 = (BarcodeImage)imObj1.clone();
-      BarcodeImage imObj3 = new BarcodeImage();
+      //BarcodeImage imObj1 = new BarcodeImage(userArray);
+      //BarcodeImage imObj2 = (BarcodeImage)imObj1.clone();
+      //BarcodeImage imObj3 = new BarcodeImage();
 
       /* change ONLY the first object
       imObj1.setPixel(2, 2, true);
       imObj1.setPixel(4, 0, false);*/
 
-      //First secret message
-      imObj1.displayToConsole(); 
-      imObj2.displayToConsole();
-      imObj3.displayToConsole();
-      
+      // For debugging BarcodeImage class First secret message
+      //imObj1.displayToConsole(); 
+      /*imObj2.displayToConsole();
+      imObj3.displayToConsole();*/
+
       // test clearImage later when DataMatrix setup
       // imObj2.clearImage();
       // imObj2.displayToConsole();
@@ -52,24 +113,24 @@ interface BarcodeIO
 // DataMatrix class-------------------------------------------------------------
 class DataMatrix implements BarcodeIO
 {
-  
+
    public static final char BLACK_CHAR = '*';
    public static final char WHITE_CHAR = ' ';
    public static final int MIN_TEXT_LENGTH = 0, MAX_TEXT_LENGTH = 100;
-   
+
    // a single internal copy of any image scanned-in
    // OR passed-into the constructor
    // OR created by BarcodeIO's generateImageFromText()
    private BarcodeImage image;
-   
+
    // a single internal copy of any text read-in
    // OR passed-into the constructor
    // OR created by BarcodeIO's translateImageToText()
    private String text;
- 
+
    // represent the actual portion of the BarcodeImage that has real signal
    private int actualHeight, actualWidth;
-   
+
    // default constructor
    DataMatrix()
    {
@@ -78,21 +139,21 @@ class DataMatrix implements BarcodeIO
       actualHeight = 0;
       actualWidth = 0;
    }
-   
+
    // 1-parameter constructor, modifies image only
    DataMatrix(BarcodeImage image)
    {
       this();
       scan(image);
    }
-   
+
    // 1-parameter constructor, modifies text only
    DataMatrix(String text)
    {
       this();
       readText(text);
    }
-   
+
    // mutators
    public boolean readText(String text)
    {
@@ -101,28 +162,26 @@ class DataMatrix implements BarcodeIO
       this.text = text;
       return true;
    }
-   
+
    public boolean scan(BarcodeImage image)
    {
-      try
-      {
-         BarcodeImage temp = (BarcodeImage)image.clone();
-      } catch (CloneNotSupportedException e)
-      {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      }
-      
-      if (actualHeight > BarcodeImage.MAX_HEIGHT
-            || actualWidth > BarcodeImage.MAX_WIDTH)
+      if (image == null)
          return false;
       
-      this.actualHeight = image.getImageHeight();
-      this.actualWidth = image.getImageWidth(0);
+      try
+      {
+         this.image = (BarcodeImage)image.clone();
+      } catch (CloneNotSupportedException e)
+      {
+        
+      }
       
+      actualHeight = computeSignalHeight();
+      actualWidth = computeSignalWidth();
+
       return true;
    }
-   
+
    private void clearImage()
    {
       int row, col;
@@ -130,13 +189,13 @@ class DataMatrix implements BarcodeIO
          for ( col = 0; col < BarcodeImage.MAX_WIDTH; col++ )
             image.setPixel(row, col, false);
    }
-   
+
    // accessors
    public int getActualHeight()
    {
       return actualHeight;
    }
-   
+
    public int getActualWidth()
    {
       return actualWidth;
@@ -144,46 +203,87 @@ class DataMatrix implements BarcodeIO
    
    private int computeSignalHeight()
    {
-      return 0;
+      for (int row = 0; row < BarcodeImage.MAX_HEIGHT; row++ )
+         if(image.getPixel(row, 0) == true)
+            return BarcodeImage.MAX_HEIGHT - row;
+      return -1;
    }
    
+   // set to private after debugging
    private int computeSignalWidth()
    {
-      return 0;
+      for (int col = 0; col < BarcodeImage.MAX_WIDTH; col++ )
+         if(image.getPixel(BarcodeImage.MAX_HEIGHT - 1, col) == false)
+            return col;
+      return -1;
    }
-   
+
    public boolean generateImageFromText()
    {
-      return false;
+      int code = 0;
+      
+      for(int k = 0; k < text.length(); k++)
+      {
+         code = Integer.parseInt(String.valueOf(text.charAt(k)), 16);
+         System.out.print(code);
+         writeCharToCol(k, code);
+      }
+      return true;
    }
-   
+
    public boolean translateImageToText()
    {
-      return false;
+      for (int col = 1; col < actualWidth - 1; col++)
+      {
+         this.text += readCharFromCol(col);
+      }
+
+      return true;
    }
-   
+
    // helper methods
    private char readCharFromCol(int col)
    {
-      return ' ';
+      int exp = 0;
+      char fromCol = 0;
+      for (int row = BarcodeImage.MAX_HEIGHT - 2;
+            row > BarcodeImage.MAX_HEIGHT - actualHeight; row--)
+      {
+         if(image.getPixel(row, col) == true)
+             fromCol += Math.pow(2, exp);
+         exp++;
+      }
+      System.out.print(fromCol);
+      return fromCol;
    }
-   
-   private char writeCharToCol(int col, int code)
+
+   private boolean writeCharToCol(int col, int code)
    {
-      return ' ';
+      int exp = 0;
+      char fromCol = 0;
+      String binary = Integer.toBinaryString(code);
+      System.out.print(binary);
+      /*for (int row = BarcodeImage.MAX_HEIGHT - 2;
+            row > BarcodeImage.MAX_HEIGHT - actualHeight; row--)
+      {
+         if(image.getPixel(row, col) == true)
+             fromCol += Math.pow(2, exp);
+         exp++;
+      }*/
+      return true;
    }
-   
+
    // display methods
    public void displayTextToConsole()
    {
-      
+
    }
-   
+
    public void displayImageToConsole()
    {
-      
+
    }
-   
+
    public void displayRawImage()
    {
       int row, col;
@@ -254,7 +354,7 @@ class BarcodeImage implements Cloneable
                image_data[row + (MAX_HEIGHT - str_data.length)][col] = true;
       }
    }
-   
+
    // validator
    private boolean checkSize(String[] data )
    {
@@ -262,9 +362,11 @@ class BarcodeImage implements Cloneable
          return false;
       if (data.length > MAX_HEIGHT)
          return false;
+      if (data[0].length() > MAX_WIDTH)
+         return false;
       return true;
    }
-   
+
    // clone method
    public Object clone() throws CloneNotSupportedException
    {
@@ -298,12 +400,12 @@ class BarcodeImage implements Cloneable
          return false; // use as an error (lame, but easy)
       return image_data[row][col];
    }
-   
+
    public int getImageHeight()
    {
       return image_data.length;
    }
-   
+
    public int getImageWidth(int k)
    {
       return image_data[0].length;
